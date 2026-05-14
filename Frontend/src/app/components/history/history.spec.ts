@@ -14,7 +14,7 @@ describe('History', () => {
 
     fixture = TestBed.createComponent(History);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {

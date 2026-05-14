@@ -14,7 +14,7 @@ describe('Admin', () => {
 
     fixture = TestBed.createComponent(Admin);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {

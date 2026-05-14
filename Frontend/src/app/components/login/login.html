@@ -1,1 +1,33 @@
-<p>login works!</p>
+<div class="login-container">
+    <mat-card class="card">
+        <mat-card-header>
+            <mat-card-title>התחברות למערכת למידה</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form (submit)="onSubmit()">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>שם משתמש</mat-label>
+                    <input matInput [(ngModel)]="name" name="username" required class="form-input">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>תעודת זהות</mat-label>
+                    <input matInput [(ngModel)]="id" name="_id" required class="form-input">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>מספר טלפון</mat-label>
+                    <input matInput [(ngModel)]="phone" name="phone" required class="form-input">
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" type="submit" class="btn-primary">כניסה</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div class="footer-link" style="margin-top: 20px; text-align: center;">
+    <span>עדיין אין לך חשבון? </span>
+    <a routerLink="/register" style="cursor: pointer; color: blue; text-decoration: underline;">להרשמה מהירה</a>
+</div>

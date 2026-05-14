@@ -1,0 +1,154 @@
+.dialog-container {
+  font-family: 'Assistant', sans-serif;
+}
+
+.lesson-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #3f51b5;
+  margin-bottom: 20px;
+}
+
+.lesson-section h3 {
+  border-right: 4px solid #3f51b5;
+  padding-right: 10px;
+  color: #333;
+  margin-top: 20px;
+}
+
+.content-box {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.exercises-title {
+  border-color: #f44336 !important;
+}
+
+.exercise-list {
+  list-style: none;
+  padding: 0;
+}
+
+.exercise-item {
+  background: #e8eaf6;
+  margin-bottom: 8px;
+  padding: 10px;
+  border-radius: 6px;
+  border-right: 4px solid #7986cb;
+}
+.dialog-frame {
+  font-family: 'Assistant', sans-serif;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.dialog-header {
+  background: linear-gradient(135deg, #3f51b5 0%, #1a237e 100%);
+  color: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.header-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  margin-left: 15px;
+  opacity: 0.9;
+}
+
+.header-text h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+}
+
+.stylish-content {
+  padding: 24px !important;
+  background-color: #f8f9fa;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-weight: 700;
+  color: #333;
+}
+
+.text-body {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  line-height: 1.8;
+  color: #444;
+  white-space: pre-wrap;
+  border-right: 5px solid #3f51b5;
+}
+
+.exercise-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.exercise-card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid #e0e0e0;
+  transition: transform 0.2s;
+}
+
+.exercise-card:hover {
+  transform: translateY(-2px);
+  border-color: #3f51b5;
+}
+
+.badge {
+  background: #3f51b5;
+  color: white;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.dialog-footer {
+  padding: 16px;
+  background: white;
+  border-top: 1px solid #eee;
+  gap: 10px;
+}

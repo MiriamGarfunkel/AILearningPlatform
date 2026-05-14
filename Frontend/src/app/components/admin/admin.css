@@ -1,0 +1,13 @@
+.admin-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+button mat-icon {
+  margin-left: 8px;
+}

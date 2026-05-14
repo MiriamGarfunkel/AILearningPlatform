@@ -1,0 +1,54 @@
+/* מרכוז הקומפוננטה על כל המסך */
+.welcome-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  direction: rtl; /* יישור לימין לעברית */
+}
+
+/* עיצוב הכרטיס המרכזי */
+.welcome-card {
+  width: 100%;
+  max-width: 450px;
+  padding: 30px;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+
+/* כותרת הדף */
+.welcome-card mat-card-title {
+  font-size: 26px;
+  font-weight: bold;
+  color: #3f51b5; /* כחול מקצועי */
+  margin-bottom: 10px;
+}
+
+/* תת כותרת */
+.welcome-card mat-card-subtitle {
+  font-size: 16px;
+  margin-bottom: 25px;
+  color: #666;
+}
+
+/* סידור הכפתורים אחד מתחת לשני */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* רווח בין הכפתורים */
+  margin-top: 20px;
+}
+
+/* עיצוב כפתור ההתחברות */
+.btn-login {
+  height: 50px;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+}
+
+/* עיצוב כפתור ההרשמה */
+.btn-register {
+  height: 50px;
+  font-size: 18px !important;
+}

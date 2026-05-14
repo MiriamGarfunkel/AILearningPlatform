@@ -19,6 +19,11 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "optimization": {
+              "fonts": {
+                "inline": false
+              }
+            },
             "assets": [
               {
                 "glob": "**/*",
@@ -26,6 +31,7 @@
               }
             ],
             "styles": [
+              "src/material-theme.scss",
               "src/styles.css"
             ]
           },

@@ -1,1 +1,36 @@
-<p>register works!</p>
+<div class="auth-container">
+    <mat-card class="auth-card">
+        <mat-card-header>
+            <mat-card-title>יצירת חשבון חדש</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form (submit)="onRegister()">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>שם מלא</mat-label>
+                    <input matInput [(ngModel)]="userData.name" name="name" required placeholder="הכנס שם מלא">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>תעודת זהות</mat-label>
+                    <input matInput [(ngModel)]="userData.id" name="id" required placeholder="הכנס 9 ספרות">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>מספר טלפון</mat-label>
+                    <input matInput [(ngModel)]="userData.phone" name="phone" required placeholder="למשל: 0501234567">
+                </mat-form-field>
+
+
+                <div class="actions">
+                    <button mat-raised-button color="primary" type="submit">הרשמה</button>
+                    <a mat-button routerLink="/login">כבר יש לך חשבון? התחבר כאן</a>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div class="footer-link" style="margin-top: 20px;">
+    <span>כבר נרשמת בעבר? </span>
+    <a routerLink="/login" style="cursor: pointer; color: blue; text-decoration: underline;">להתחברות</a>
+</div>

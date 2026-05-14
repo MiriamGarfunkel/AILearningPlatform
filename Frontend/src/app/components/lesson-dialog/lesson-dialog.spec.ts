@@ -14,7 +14,7 @@ describe('LessonDialog', () => {
 
     fixture = TestBed.createComponent(LessonDialog);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {

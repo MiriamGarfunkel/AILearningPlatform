@@ -1,1 +1,47 @@
-<p>lesson-dialog works!</p>
+<div dir="rtl" class="dialog-frame">
+  <header class="dialog-header">
+    <mat-icon class="header-icon">auto_stories</mat-icon>
+    <div class="header-text">
+      <h2 mat-dialog-title>{{ data.topic }}</h2>
+      <span class="subtitle">סיכום שיעור מההיסטוריה</span>
+    </div>
+    <button mat-icon-button mat-dialog-close class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <mat-dialog-content class="stylish-content">
+    <div class="content-card">
+      <div class="section-header">
+        <mat-icon color="primary">lightbulb</mat-icon>
+        <h3>מה למדנו?</h3>
+      </div>
+      <div class="text-body">
+        {{ data.content }}
+      </div>
+    </div>
+
+    <mat-divider class="my-4"></mat-divider>
+
+    <div class="exercise-section" *ngIf="data.exercises?.length">
+      <div class="section-header">
+        <mat-icon color="warn">assignment_turned_in</mat-icon>
+        <h3>משימות לתרגול</h3>
+      </div>
+      <div class="exercise-grid">
+        <div *ngFor="let ex of data.exercises; let i = index" class="exercise-card">
+          <span class="badge">{{ i + 1 }}</span>
+          <p>{{ ex }}</p>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center" class="dialog-footer">
+    <button mat-flat-button color="accent" (click)="printLesson()">
+      <mat-icon>print</mat-icon>
+      הדפס שיעור
+    </button>
+    <button mat-stroked-button mat-dialog-close>סגור</button>
+  </mat-dialog-actions>
+</div>

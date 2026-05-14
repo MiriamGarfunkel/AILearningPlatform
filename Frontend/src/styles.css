@@ -1,1 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Heebo', sans-serif;
+  direction: rtl;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #2d3748;
+}
+
+/* Auth pages wrapper */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+/* Glass card effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Snackbar */
+.error-snackbar {
+  background-color: #e53e3e !important;
+  color: white !important;
+  direction: rtl !important;
+  border-radius: 12px !important;
+}
+
+.error-snackbar .mat-mdc-snack-bar-label {
+  font-weight: 600;
+  font-family: 'Heebo', sans-serif;
+}
