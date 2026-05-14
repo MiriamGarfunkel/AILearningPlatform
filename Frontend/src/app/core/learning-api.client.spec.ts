@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { LearningApiClient } from './learning-api.client';
-import { environment } from '../../environments/environments';
+import { environment } from '../../environments/environment';
 
 describe('LearningApiClient', () => {
   let client: LearningApiClient;

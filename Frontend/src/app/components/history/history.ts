@@ -1,8 +1,9 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { LearningApiClient } from '../../core/learning-api.client';
 import { LessonDialog } from '../lesson-dialog/lesson-dialog';
+import { toEnglishUiText } from '../../shared/english-display';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -10,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 
 @Component({
@@ -62,10 +63,19 @@ export class History implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('טעינת ההיסטוריה נכשלה', err);
+        console.error('Failed to load history', err);
         this.isLoading = false;
-      }
+      },
     });
+  }
+
+  rowTopic(row: any): string {
+    const raw = row.sub_category_id?.name ?? row.sub_category_id ?? 'General';
+    return toEnglishUiText(String(raw), 'General');
+  }
+
+  rowPrompt(row: any): string {
+    return toEnglishUiText(String(row.prompt ?? ''), '—');
   }
 
 viewLesson(element: any) {
@@ -78,16 +88,21 @@ viewLesson(element: any) {
       parsedResponse = { content: element.response };
     }
 
+    const topicRaw = element.sub_category_id?.name || element.sub_category_id || 'Saved lesson';
+    const contentRaw = parsedResponse.content || parsedResponse.explanation || element.response;
+    const exercisesRaw = parsedResponse.exercises || (parsedResponse.task ? [parsedResponse.task] : []);
+
     const dialogData = {
-      topic: element.sub_category_id?.name || element.sub_category_id || 'שיעור מההיסטוריה',
-      content: parsedResponse.content || parsedResponse.explanation || element.response,
-      exercises: parsedResponse.exercises || (parsedResponse.task ? [parsedResponse.task] : [])
+      topic: toEnglishUiText(String(topicRaw), 'Saved lesson'),
+      content: toEnglishUiText(String(contentRaw), '(No English text in this record.)'),
+      exercises: exercisesRaw.map((x: unknown) => toEnglishUiText(String(x), '(Item omitted.)')),
     };
 
     this.dialog.open(LessonDialog, {
-      width: '600px',
+      width: '640px',
+      maxWidth: '95vw',
       data: dialogData,
-      direction: 'rtl'
+      direction: 'ltr',
     });
   }
 

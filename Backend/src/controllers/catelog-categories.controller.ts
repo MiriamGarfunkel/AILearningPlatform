@@ -16,7 +16,7 @@ export const createCategory = async (req: Request, res: Response, next: NextFunc
     res.status(201).json(category);
   } catch (error) {
     if (error instanceof Error && error.message.includes('is required')) {
-      return next(new HttpError('שם הקטגוריה חסר', 400));
+      return next(new HttpError('Category name is required.', 400));
     }
     next(error);
   }

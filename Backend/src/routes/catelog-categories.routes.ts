@@ -19,7 +19,7 @@ const router = express.Router();
  *             properties:
  *               name:
  *                 type: string
- *                 example: "מתמטיקה"
+ *                 example: "Mathematics"
  *     responses:
  *       201:
  *         description: Category created

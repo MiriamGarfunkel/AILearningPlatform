@@ -1,6 +1,6 @@
-# Frontend
+# Lesson Fabric — Angular UI
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.2.
+Angular workspace for the Lesson Fabric app. **Setup, Docker, and AI provider options** are documented in the **repository root** `README.md`.
 
 ## Development server
 
@@ -38,7 +38,7 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 ## Running unit tests
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
 ```bash
 ng test

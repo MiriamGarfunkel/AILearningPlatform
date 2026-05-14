@@ -3,6 +3,7 @@ import Prompt from '../models/Prompt';
 import Category from '../models/Category';
 import SubCategory from '../models/SubCategory';
 import { resolveEducationalPayloadForLabels } from './educational-delivery.facade';
+import { stripHebrewFromDeep, stripHebrewScript } from '../shared/strip-hebrew-script';
 
 export interface PersistAttemptInput {
   readonly learnerSubjectId: string;
@@ -19,7 +20,7 @@ export async function persistLearnerContentAttempt(input: PersistAttemptInput) {
       : await SubCategory.findOne({ name: input.topicDescriptor }).lean()
     : null;
 
-  const disciplineLabel = category?.name ?? 'לא ידוע';
+  const disciplineLabel = category?.name ?? 'Unknown';
   const topicLabel = subCategory?.name ?? input.topicDescriptor;
 
   const { payload, content_origin } = await resolveEducationalPayloadForLabels(
@@ -28,12 +29,16 @@ export async function persistLearnerContentAttempt(input: PersistAttemptInput) {
     input.learnerPromptText,
   );
 
+  const payloadEnglishOnly = stripHebrewFromDeep(payload) as Record<string, unknown>;
+  const promptStored =
+    stripHebrewScript(input.learnerPromptText || '') || 'No prompt provided';
+
   const row = new Prompt({
     user_id: input.learnerSubjectId,
     category_id: input.branchDocumentId,
     sub_category_id: input.topicDescriptor || 'General',
-    prompt: input.learnerPromptText || 'No prompt provided',
-    response: JSON.stringify(payload),
+    prompt: promptStored,
+    response: JSON.stringify(payloadEnglishOnly),
     content_origin,
   });
 

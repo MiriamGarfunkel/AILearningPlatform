@@ -1,33 +1,69 @@
-<div class="login-container">
-    <mat-card class="card">
-        <mat-card-header>
-            <mat-card-title>התחברות למערכת למידה</mat-card-title>
-        </mat-card-header>
+<div class="login-container" dir="ltr" lang="en">
+  <mat-card class="card login-card">
+    <mat-card-header>
+      <mat-card-title>Sign in</mat-card-title>
+      <mat-card-subtitle *ngIf="isAdminIntent">Administrator sign-in</mat-card-subtitle>
+    </mat-card-header>
 
-        <mat-card-content>
-            <form (submit)="onSubmit()">
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>שם משתמש</mat-label>
-                    <input matInput [(ngModel)]="name" name="username" required class="form-input">
-                </mat-form-field>
+    <mat-card-content>
+      <form *ngIf="!isAdminIntent" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill" class="full-width" subscriptSizing="dynamic">
+          <mat-label>Full name</mat-label>
+          <input matInput [(ngModel)]="name" name="username" required autocomplete="name" />
+        </mat-form-field>
 
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>תעודת זהות</mat-label>
-                    <input matInput [(ngModel)]="id" name="_id" required class="form-input">
-                </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width" subscriptSizing="dynamic">
+          <mat-label>ID number</mat-label>
+          <input matInput [(ngModel)]="id" name="_id" required autocomplete="username" />
+        </mat-form-field>
 
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>מספר טלפון</mat-label>
-                    <input matInput [(ngModel)]="phone" name="phone" required class="form-input">
-                </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width" subscriptSizing="dynamic">
+          <mat-label>Phone</mat-label>
+          <input matInput [(ngModel)]="phone" name="phone" required type="tel" autocomplete="tel" />
+        </mat-form-field>
 
-                <button mat-raised-button color="primary" type="submit" class="btn-primary">כניסה</button>
-            </form>
-        </mat-card-content>
-    </mat-card>
-</div>
+        <button mat-flat-button color="primary" type="submit" class="btn-primary full-width-submit">Continue</button>
+      </form>
 
-<div class="footer-link" style="margin-top: 20px; text-align: center;">
-    <span>עדיין אין לך חשבון? </span>
-    <a routerLink="/register" style="cursor: pointer; color: blue; text-decoration: underline;">להרשמה מהירה</a>
+      <form *ngIf="isAdminIntent" class="admin-signin-form" novalidate (ngSubmit)="onSubmit($event)">
+        <mat-form-field appearance="fill" class="full-width" subscriptSizing="dynamic">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="text"
+            inputmode="email"
+            autocomplete="username"
+            [(ngModel)]="adminEmail"
+            name="adminEmail"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width" subscriptSizing="dynamic">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            type="password"
+            [(ngModel)]="adminPassword"
+            name="adminPassword"
+            autocomplete="current-password"
+          />
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit" class="btn-primary full-width-submit">
+          Continue
+        </button>
+      </form>
+
+      <p *ngIf="isAdminIntent" class="admin-mode-footer">
+        <a routerLink="/login">Learner sign-in</a>
+        <span class="footer-sep">·</span>
+        <span class="footer-hint">Use administrator email and password</span>
+      </p>
+
+      <p *ngIf="!isAdminIntent" class="single-footer">
+        Need an account?
+        <a routerLink="/register">Register</a>
+      </p>
+    </mat-card-content>
+  </mat-card>
 </div>

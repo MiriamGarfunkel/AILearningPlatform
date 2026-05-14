@@ -24,9 +24,10 @@ A minimal MVP learning platform that lets users pick a subject, send prompts to 
 
 ```
 AILearningPlatform/
+├── .env.example            # minimal vars for Docker Compose interpolation
 ├── Backend/
 │   ├── src/
-│   │   ├── config/          # env reader, db connection
+│   │   ├── config/          # typed env readers (Mongo URI, port, JWT, AI mode)
 │   │   ├── controllers/     # request handlers (thin layer)
 │   │   ├── middleware/       # JWT guard, global error handler
 │   │   ├── models/          # Mongoose schemas (User, Category, SubCategory, Prompt)
@@ -54,10 +55,13 @@ AILearningPlatform/
 ### Users
 | Field | Type | Notes |
 |-------|------|-------|
-| _id | String | Israeli ID / custom string key |
+| _id | String | National ID or custom string primary key |
 | name | String | required |
 | phone | String | required, unique |
+| email | String | optional, unique when set (admin email login) |
+| password_hash | String | optional, select:false (bcrypt; admin sign-in) |
 | role | String | `user` \| `admin`, default `user` |
+| created_at / updated_at | Date | automatic |
 
 ### Categories
 | Field | Type | Notes |
@@ -112,7 +116,7 @@ AILearningPlatform/
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|
 | POST | `/generate` | user | Generate AI lesson, saves to history |
-| GET | `/history/:user_id` | user | Get learning history for a user |
+| GET | `/history/:user_id` | user | Get learning history for a user (self only unless `role=admin`) |
 | GET | `/all` | admin | Get all prompts, paginated |
 
 Full interactive docs available at `http://localhost:5000/api-docs` when the server is running.
@@ -133,11 +137,11 @@ The platform supports three modes, controlled by the `AI_PROVIDER_MODE` environm
 
 ## Working Assumptions
 
-- User identity is a string (e.g. Israeli ID number) supplied by the client — there is no password. Authentication is based on matching `id + name + phone`.
-- JWT tokens are stateless; there is no token revocation mechanism in this MVP.
-- The offline stub returns a structured Hebrew lesson object so the full flow can be tested without an OpenAI key.
-- `category_id` and `sub_category_id` are stored as plain strings in the Prompt document (snapshot at request time) rather than live references, so history remains accurate even if categories are renamed.
-- Docker Compose is the recommended way to run the full stack locally.
+- **Learners** register with `id`, `name`, and `phone` (no password). They sign in with the same three fields; JWTs are stateless with no revocation in this MVP.
+- **Administrators** are bootstrapped via `npm run seed:admin` using `ADMIN_*` variables in `.env` (email + password + profile fields). Admins sign in with **email and password** or with the same national-ID flow as learners if configured.
+- **English-only policy**: UI copy and mock/offline lesson payloads are English. Persisted lessons are sanitized server-side to strip Hebrew script; catalog seed `npm run seed:catalog:english` resets categories to English labels when needed.
+- `category_id` and `sub_category_id` on `Prompt` are stored as string snapshots at request time so history stays accurate if catalog labels change later.
+- Docker Compose is the recommended way to run MongoDB (and optionally the full stack) locally.
 
 ---
 
@@ -206,16 +210,13 @@ This starts MongoDB, the API server, and the frontend together.
 
 ### 1. Configure environment
 
+Create a `.env` file at the project root (Docker Compose reads it for variable substitution). The simplest approach is to copy the backend template, then ensure at least `JWT_SECRET` is set:
+
 ```bash
 cp Backend/.env.example .env
 ```
 
-Edit `.env` at the project root and set at minimum:
-
-```env
-JWT_SECRET=your-long-random-secret
-OPENAI_API_KEY=sk-...   # optional
-```
+The `api` service in `docker-compose.yml` sets `MONGO_URI` to the `mongo` container, overriding a localhost value from the file when you use Compose.
 
 ### 2. Build and start
 

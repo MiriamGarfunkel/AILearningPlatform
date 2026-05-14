@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { LessonDialog } from '../lesson-dialog/lesson-dialog';
+import { toEnglishUiText } from '../../shared/english-display';
 
 @Component({
   selector: 'app-admin',
@@ -24,6 +25,7 @@ import { LessonDialog } from '../lesson-dialog/lesson-dialog';
     MatDialogModule,
   ],
   templateUrl: './admin.html',
+  styleUrl: './admin.css',
 })
 export class Admin implements OnInit {
   allUsers: any[] = [];
@@ -105,6 +107,18 @@ export class Admin implements OnInit {
     });
   }
 
+  displayUserName(user: { name?: string }): string {
+    return toEnglishUiText(String(user?.name ?? ''), '—');
+  }
+
+  displayLearner(entry: { user_id?: { name?: string } }): string {
+    return toEnglishUiText(String(entry.user_id?.name ?? 'Unknown user'), 'Unknown user');
+  }
+
+  displayPrompt(entry: { prompt?: string }): string {
+    return toEnglishUiText(String(entry.prompt ?? ''), '—');
+  }
+
   resetHistoryScope() {
     this.historyPageIndex = 0;
     this.loadGlobalHistory(1, this.historyPageSize);
@@ -119,23 +133,28 @@ export class Admin implements OnInit {
       parsedResponse = { content: entry.response };
     }
 
+    const topicRaw = entry.sub_category_id?.name || entry.sub_category_id || 'Saved lesson';
+    const contentRaw =
+      (parsedResponse as { content?: string }).content ||
+      (parsedResponse as { explanation?: string }).explanation ||
+      entry.response;
+    const exercisesRaw =
+      (parsedResponse as { exercises?: string[] }).exercises ||
+      ((parsedResponse as { task?: string }).task
+        ? [(parsedResponse as { task?: string }).task!]
+        : []);
+
     const dialogData = {
-      topic: entry.sub_category_id?.name || entry.sub_category_id || 'שיעור מההיסטוריה',
-      content:
-        (parsedResponse as { content?: string }).content ||
-        (parsedResponse as { explanation?: string }).explanation ||
-        entry.response,
-      exercises:
-        (parsedResponse as { exercises?: string[] }).exercises ||
-        ((parsedResponse as { task?: string }).task
-          ? [(parsedResponse as { task?: string }).task!]
-          : []),
+      topic: toEnglishUiText(String(topicRaw), 'Saved lesson'),
+      content: toEnglishUiText(String(contentRaw), '(No English text in this record.)'),
+      exercises: exercisesRaw.map((x) => toEnglishUiText(String(x), '—')),
     };
 
     this.dialog.open(LessonDialog, {
-      width: '600px',
+      width: '640px',
+      maxWidth: '95vw',
       data: dialogData,
-      direction: 'rtl',
+      direction: 'ltr',
     });
   }
 }

@@ -1,11 +1,11 @@
-<div dir="rtl" class="dialog-frame">
+<div dir="ltr" class="dialog-frame">
   <header class="dialog-header">
-    <mat-icon class="header-icon">auto_stories</mat-icon>
+    <mat-icon class="header-icon" aria-hidden="true">auto_stories</mat-icon>
     <div class="header-text">
       <h2 mat-dialog-title>{{ data.topic }}</h2>
-      <span class="subtitle">סיכום שיעור מההיסטוריה</span>
+      <span class="subtitle">Lesson from history</span>
     </div>
-    <button mat-icon-button mat-dialog-close class="close-btn">
+    <button mat-icon-button mat-dialog-close class="close-btn" type="button" aria-label="Close">
       <mat-icon>close</mat-icon>
     </button>
   </header>
@@ -14,19 +14,19 @@
     <div class="content-card">
       <div class="section-header">
         <mat-icon color="primary">lightbulb</mat-icon>
-        <h3>מה למדנו?</h3>
+        <h3>What we covered</h3>
       </div>
       <div class="text-body">
         {{ data.content }}
       </div>
     </div>
 
-    <mat-divider class="my-4"></mat-divider>
+    <mat-divider class="section-divider"></mat-divider>
 
     <div class="exercise-section" *ngIf="data.exercises?.length">
       <div class="section-header">
         <mat-icon color="warn">assignment_turned_in</mat-icon>
-        <h3>משימות לתרגול</h3>
+        <h3>Practice tasks</h3>
       </div>
       <div class="exercise-grid">
         <div *ngFor="let ex of data.exercises; let i = index" class="exercise-card">
@@ -38,10 +38,10 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="center" class="dialog-footer">
-    <button mat-flat-button color="accent" (click)="printLesson()">
+    <button mat-flat-button color="accent" type="button" (click)="printLesson()">
       <mat-icon>print</mat-icon>
-      הדפס שיעור
+      Print
     </button>
-    <button mat-stroked-button mat-dialog-close>סגור</button>
+    <button mat-stroked-button mat-dialog-close type="button">Close</button>
   </mat-dialog-actions>
 </div>

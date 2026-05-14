@@ -12,7 +12,7 @@ export const global_error_handler = (
   if (typeof err === 'object' && err !== null && (err as { code?: number }).code === 11000) {
     return res.status(400).json({
       success: false,
-      message: 'הנתונים שהזנת  כבר קיימים במערכת',
+      message: 'That value already exists in the system.',
     });
   }
 
@@ -34,10 +34,10 @@ export const global_error_handler = (
       ? err.message
       : err instanceof Error
         ? err.message
-        : 'שגיאת שרת פנימית';
+        : 'Internal server error.';
 
   res.status(status >= 400 && status < 600 ? status : 500).json({
     success: false,
-    message: message || 'שגיאת שרת פנימית',
+    message: message || 'Internal server error.',
   });
 };

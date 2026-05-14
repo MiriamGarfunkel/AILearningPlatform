@@ -1,0 +1,175 @@
+:host {
+  display: block;
+  min-height: auto;
+}
+
+.login-container {
+  width: 100%;
+  min-height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  background: var(--app-bg);
+  overflow-x: hidden;
+  overflow-y: visible;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--app-fg) !important;
+  border: 1px solid var(--app-border) !important;
+  border-radius: var(--app-radius) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45) !important;
+  overflow: visible !important;
+  flex-shrink: 0;
+}
+
+.login-card .mat-mdc-card-header {
+  justify-content: center;
+  padding: 28px 24px 8px;
+}
+
+.login-card .mat-mdc-card-title {
+  font-size: clamp(1.75rem, 3vw, 2.1rem) !important;
+  font-weight: 800 !important;
+  color: var(--app-fg) !important;
+}
+
+.login-card .mat-mdc-card-subtitle {
+  color: var(--app-muted) !important;
+  font-size: 1.05rem !important;
+  margin-top: 8px !important;
+}
+
+.login-card .mat-mdc-card-content {
+  padding: 12px 24px 32px !important;
+}
+
+.login-card .mat-mdc-form-field {
+  width: 100%;
+  text-align: left;
+}
+
+.admin-signin-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.full-width-submit {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.single-footer {
+  margin-top: 28px;
+  font-size: 1.1rem;
+  color: var(--app-muted);
+}
+
+.single-footer a {
+  color: var(--app-link);
+  font-weight: 700;
+  margin-left: 6px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.admin-mode-footer {
+  margin-top: 24px;
+  font-size: 1.05rem;
+  color: var(--app-muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.admin-mode-footer a {
+  color: var(--app-link);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.footer-sep {
+  margin: 0 8px;
+  opacity: 0.6;
+}
+
+.footer-hint {
+  color: var(--app-muted);
+  font-size: 0.95rem;
+}
+
+.mode-switch {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.text-link {
+  background: none;
+  border: none;
+  color: var(--app-link);
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  padding: 0;
+  font: inherit;
+}
+
+.text-link:hover {
+  opacity: 0.9;
+}
+
+:host {
+  display: block;
+}
+
+:host ::ng-deep .login-card .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: rgba(20, 20, 22, 0.9) !important;
+}
+
+:host ::ng-deep .login-card .mat-mdc-form-field-focus-overlay {
+  background-color: transparent !important;
+}
+
+:host ::ng-deep .login-card .mdc-line-ripple::before,
+:host ::ng-deep .login-card .mdc-line-ripple::after {
+  border-bottom-color: var(--app-accent) !important;
+}
+
+:host ::ng-deep .login-card .mat-mdc-input-element {
+  color: var(--app-fg) !important;
+  caret-color: var(--app-accent) !important;
+}
+
+:host ::ng-deep .login-card .mat-mdc-floating-label,
+:host ::ng-deep .login-card .mdc-floating-label--float-above {
+  color: var(--app-muted) !important;
+}
+
+:host ::ng-deep .login-card .mat-mdc-unelevated-button.mat-primary,
+:host ::ng-deep .login-card .mat-mdc-button-base.mat-primary {
+  background: linear-gradient(135deg, var(--app-accent) 0%, var(--app-accent-deep) 100%) !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 24px var(--app-accent-glow);
+}
+
+:host ::ng-deep .login-card .mat-mdc-unelevated-button.mat-primary:hover:not(:disabled) {
+  box-shadow: 0 6px 32px rgba(0, 122, 255, 0.55);
+  filter: brightness(1.06);
+}

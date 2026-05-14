@@ -1,0 +1,29 @@
+.auth-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: auto;
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+
+.full-width-submit {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.single-footer {
+  margin-top: 28px;
+  font-size: 1.1rem;
+  color: #bdbdbd;
+  text-align: center;
+}
+
+.single-footer a {
+  color: #ffffff;
+  font-weight: 700;
+  margin-left: 6px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}

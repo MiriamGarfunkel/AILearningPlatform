@@ -28,14 +28,10 @@ const router = express.Router();
  *                 example: "123456789"
  *               name:
  *                 type: string
- *                 example: "מרים"
+ *                 example: "Jane Learner"
  *               phone:
  *                 type: string
- *                 example: "0501234567"
- *               role:
- *                 type: string
- *                 enum: [user, admin]
- *                 example: "user"
+ *                 example: "+15551234567"
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -54,17 +50,23 @@ router.post('/register', registerUser);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [id, name, phone]
+ *             description: Use either (email + password) OR (id + name + phone).
  *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "admin@ailocal.test"
+ *               password:
+ *                 type: string
+ *                 example: "AdminLocal#2026"
  *               id:
  *                 type: string
  *                 example: "123456789"
  *               name:
  *                 type: string
- *                 example: "מרים"
+ *                 example: "Jane Learner"
  *               phone:
  *                 type: string
- *                 example: "0501234567"
+ *                 example: "+15551234567"
  *     responses:
  *       200:
  *         description: Login successful

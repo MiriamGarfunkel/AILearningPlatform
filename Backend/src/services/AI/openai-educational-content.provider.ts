@@ -1,5 +1,12 @@
 import OpenAI from 'openai';
-import type { EducationalContentProvider } from './educational-content-provider';
+import type { EducationalContentProvider, LessonGenerationContext } from './educational-content-provider';
+
+const ENGLISH_SYSTEM_PROMPT = `You are an expert educational assistant.
+Rules:
+- Write EVERY string in the JSON output in English only (topic, explanation, task, and any other fields).
+- Never include Hebrew, Arabic, Cyrillic, or any non-Latin script in JSON values. If source labels are non-English, translate the teaching content into English; you may mention the original topic once in Latin transliteration only if essential.
+- Do not write lesson body text in Hebrew or any non-English language.
+- Return only valid JSON matching the user's schema. No markdown fences.`;
 
 export class OpenAiEducationalContentProvider implements EducationalContentProvider {
   readonly providerChannel = 'openai_chat' as const;
@@ -13,16 +20,24 @@ export class OpenAiEducationalContentProvider implements EducationalContentProvi
   async fetchStructuredLesson(
     disciplineLabel: string,
     topicLabel: string,
+    context?: LessonGenerationContext,
   ): Promise<Record<string, unknown>> {
-    const userMessage = `Create a learning module for ${disciplineLabel} specifically about ${topicLabel}.
-Return the response in JSON format with the following fields:
-- topic: the sub-category name
-- explanation: a clear explanation of the topic.
-- task: a practical task for the student to perform.`;
+    const learner = context?.learnerQuestion?.trim();
+    const userMessage = `Create a learning module for the discipline "${disciplineLabel}" focused on "${topicLabel}".
+${learner ? `The learner also asked: "${learner}". Address this in your explanation and task, all in English.\n` : ''}
+Return a single JSON object with exactly these keys:
+- "topic": short English title for this module
+- "explanation": clear English explanation suitable for a student
+- "task": one practical English task for the student
+
+Remember: all values must be English text only.`;
 
     const response = await this.client.chat.completions.create({
       model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: userMessage }],
+      messages: [
+        { role: 'system', content: ENGLISH_SYSTEM_PROMPT },
+        { role: 'user', content: userMessage },
+      ],
       response_format: { type: 'json_object' },
     });
 

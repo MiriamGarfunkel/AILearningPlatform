@@ -1,37 +1,41 @@
-<mat-toolbar color="warn" class="flex flex-wrap items-center gap-3 px-4 py-2 shadow-md">
-  <span class="font-semibold tracking-tight">לוח מפעילים — ניהול למידה</span>
-  <span class="flex-1"></span>
-  <button mat-stroked-button routerLink="/dashboard" class="!border-white/80 !text-white">
+<div class="admin-root" dir="ltr" lang="en">
+<mat-toolbar class="admin-toolbar">
+  <a routerLink="/dashboard" class="brand-link" aria-label="LearnAI home">
+    <span class="brand-logo brand-logo-header">Learn<span class="brand-ai">AI</span>.</span>
+  </a>
+  <span class="toolbar-title">Admin overview</span>
+  <span class="flex-spacer"></span>
+  <button mat-button type="button" routerLink="/dashboard">
     <mat-icon>dashboard</mat-icon>
-    חזרה לסטודיו
+    Back to studio
   </button>
 </mat-toolbar>
 
-<section class="mx-auto max-w-7xl px-4 py-8 space-y-10 rtl">
-  <div class="grid gap-8 lg:grid-cols-2">
-    <article class="rounded-2xl border border-slate-200/80 bg-white/90 p-5 shadow-sm backdrop-blur">
-      <header class="mb-4 flex items-center justify-between gap-2">
-        <h3 class="text-lg font-semibold text-slate-800">משתמשים רשומים</h3>
-        <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-900">ניהול</span>
+<section class="admin-section">
+  <div class="admin-grid">
+    <article class="admin-panel">
+      <header class="panel-header">
+        <h2>Registered users</h2>
+        <span class="pill">Directory</span>
       </header>
-      <div class="overflow-x-auto rounded-xl border border-slate-100">
-        <table mat-table [dataSource]="allUsers" class="min-w-full">
+      <div class="table-wrap">
+        <table mat-table [dataSource]="allUsers" class="data-table">
           <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>שם</th>
-            <td mat-cell *matCellDef="let user">{{ user.name }}</td>
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let user">{{ displayUserName(user) }}</td>
           </ng-container>
           <ng-container matColumnDef="phone">
-            <th mat-header-cell *matHeaderCellDef>טלפון</th>
+            <th mat-header-cell *matHeaderCellDef>Phone</th>
             <td mat-cell *matCellDef="let user">{{ user.phone }}</td>
           </ng-container>
           <ng-container matColumnDef="role">
-            <th mat-header-cell *matHeaderCellDef>תפקיד</th>
+            <th mat-header-cell *matHeaderCellDef>Role</th>
             <td mat-cell *matCellDef="let user">{{ user.role }}</td>
           </ng-container>
           <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>פעולות</th>
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let user">
-              <button mat-button color="primary" (click)="viewHistory(user._id)">צפה בפעילות</button>
+              <button mat-button color="primary" type="button" (click)="viewHistory(user._id)">View activity</button>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="userColumns"></tr>
@@ -39,7 +43,6 @@
         </table>
       </div>
       <mat-paginator
-        class="!bg-transparent"
         [length]="totalUsers"
         [pageSize]="userPageSize"
         [pageSizeOptions]="[5, 10, 20]"
@@ -47,39 +50,33 @@
       ></mat-paginator>
     </article>
 
-    <article class="rounded-2xl border border-slate-200/80 bg-slate-50/90 p-5 shadow-inner backdrop-blur">
-      <header class="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <h3 class="text-lg font-semibold text-slate-800">יומן למידה כולל</h3>
-        <div class="flex flex-wrap items-center gap-2">
-          <span
-            *ngIf="scopedLearnerId"
-            class="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-900 ring-1 ring-amber-200"
-            >מסונן למשתמש</span
-          >
-          <button *ngIf="scopedLearnerId" mat-stroked-button color="primary" type="button" (click)="resetHistoryScope()">
-            הצג את כל המשתמשים
-          </button>
-          <span class="rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-900">אגרגציה</span>
+    <article class="admin-panel secondary">
+      <header class="panel-header">
+        <h2>Global lesson log</h2>
+        <div class="header-actions">
+          <span *ngIf="scopedLearnerId" class="pill muted">Filtered to one learner</span>
+          <button *ngIf="scopedLearnerId" mat-button type="button" (click)="resetHistoryScope()">Show all</button>
+          <span class="pill">Aggregate</span>
         </div>
       </header>
-      <div class="overflow-x-auto rounded-xl border border-slate-100 bg-white">
-        <table mat-table [dataSource]="allHistory" class="min-w-full">
+      <div class="table-wrap">
+        <table mat-table [dataSource]="allHistory" class="data-table">
           <ng-container matColumnDef="userName">
-            <th mat-header-cell *matHeaderCellDef>שם המשתמש</th>
-            <td mat-cell *matCellDef="let entry">{{ entry.user_id?.name || 'משתמש לא ידוע' }}</td>
+            <th mat-header-cell *matHeaderCellDef>Learner</th>
+            <td mat-cell *matCellDef="let entry">{{ displayLearner(entry) }}</td>
           </ng-container>
           <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef>תאריך</th>
+            <th mat-header-cell *matHeaderCellDef>Date</th>
             <td mat-cell *matCellDef="let entry">{{ entry.created_at | date: 'short' }}</td>
           </ng-container>
           <ng-container matColumnDef="prompt">
-            <th mat-header-cell *matHeaderCellDef>שאילתה</th>
-            <td mat-cell *matCellDef="let entry">{{ entry.prompt }}</td>
+            <th mat-header-cell *matHeaderCellDef>Prompt</th>
+            <td mat-cell *matCellDef="let entry">{{ displayPrompt(entry) }}</td>
           </ng-container>
           <ng-container matColumnDef="view">
-            <th mat-header-cell *matHeaderCellDef>פעולה</th>
+            <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef="let entry">
-              <button mat-stroked-button color="accent" type="button" (click)="openLessonEntry(entry)">פתח תוכן</button>
+              <button mat-button type="button" (click)="openLessonEntry(entry)">Open content</button>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="historyColumns"></tr>
@@ -87,7 +84,6 @@
         </table>
       </div>
       <mat-paginator
-        class="!bg-transparent"
         [length]="totalHistory"
         [pageSize]="historyPageSize"
         [pageSizeOptions]="[5, 10, 20]"
@@ -96,4 +92,4 @@
     </article>
   </div>
 </section>
-
+</div>

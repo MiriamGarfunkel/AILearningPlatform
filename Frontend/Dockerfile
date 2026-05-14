@@ -7,5 +7,5 @@ RUN npx ng build --configuration production
 
 FROM nginx:1.27-alpine
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/dist/Frontend/browser /usr/share/nginx/html
+COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
 EXPOSE 80

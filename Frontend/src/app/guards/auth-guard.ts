@@ -3,12 +3,12 @@ import { CanActivateFn, Router } from '@angular/router';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  const token = localStorage.getItem('token'); // בדיקה אם המשתמש התחבר
+  const token = localStorage.getItem('token');
 
   if (token) {
     return true;
   } else {
-    router.navigate(['/login']); // אם לא מחובר, שלח אותו להתחברות
+    void router.navigate(['/login']);
     return false;
   }
 };

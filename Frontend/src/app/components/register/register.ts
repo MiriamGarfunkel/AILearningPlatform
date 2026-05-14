@@ -8,48 +8,55 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, Router } from '@angular/router';
 import { LearningApiClient } from '../../core/learning-api.client';
 
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, MatCardModule, 
-    MatFormFieldModule, MatInputModule, MatButtonModule, RouterModule
+    CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    RouterModule,
+    MatSnackBarModule,
   ],
-  templateUrl: './register.html'
+  templateUrl: './register.html',
+  styleUrl: './register.css',
 })
 export class Register {
-  // התאמה למבנה ה-Backend: id, name, phone
   userData = {
-    id: '',    // תעודת זהות (הופך ל-_id בשרת)
+    id: '',
     name: '',
-    phone: ''
+    phone: '',
   };
 
   constructor(
     private readonly gateway: LearningApiClient,
-    private router: Router,
+    private readonly router: Router,
+    private readonly snackBar: MatSnackBar,
   ) {}
 
   onRegister() {
-    // בדיקה בסיסית לפני השליחה
     if (!this.userData.id || !this.userData.name || !this.userData.phone) {
       return;
     }
 
-    // שליחה ל-API
     this.gateway.submitRegistrationEnvelope(this.userData).subscribe({
-    
-      next: (res: any) => {
-      localStorage.setItem('token', res.token);
-      localStorage.setItem('userId', (res.data as any)._id);
-      localStorage.setItem('userName', (res.data as any).name);
-      localStorage.setItem('role', (res.data as any).role);
-      this.router.navigate(['/dashboard']);
+      next: () => {
+        this.snackBar.open('Account created. You can sign in now.', 'OK', {
+          duration: 4000,
+          panelClass: ['success-snackbar'],
+        });
+        void this.router.navigate(['/login']);
       },
-
       error: (err) => {
         console.error(err);
-      }
+        const message = err.error?.message || 'Registration failed. Please try again.';
+        this.snackBar.open(message, 'OK', { duration: 6000, panelClass: ['error-snackbar'] });
+      },
     });
   }
 }

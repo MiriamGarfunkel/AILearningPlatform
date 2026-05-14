@@ -12,7 +12,7 @@ export const require_bearer_user = async (req: Request, _res: Response, next: Ne
   }
 
   if (!token) {
-    return next(new HttpError('נא להתחבר למערכת', 401));
+    return next(new HttpError('Please sign in.', 401));
   }
 
   try {
@@ -21,13 +21,13 @@ export const require_bearer_user = async (req: Request, _res: Response, next: Ne
     const user = await User.findById(decoded.id);
 
     if (!user) {
-      return next(new HttpError('משתמש לא קיים', 401));
+      return next(new HttpError('User not found.', 401));
     }
 
     (req as Request & { user?: typeof user }).user = user;
     next();
   } catch {
-    return next(new HttpError('טוקן לא תקין', 401));
+    return next(new HttpError('Invalid or expired token.', 401));
   }
 };
 
@@ -35,7 +35,7 @@ export const restrict_to_roles = (...roles: string[]) => {
   return (req: Request, _res: Response, next: NextFunction) => {
     const authed = req as Request & { user?: { role: string } };
     if (!authed.user || !roles.includes(authed.user.role)) {
-      return next(new HttpError('אין הרשאת גישה', 403));
+      return next(new HttpError('Access denied.', 403));
     }
     next();
   };

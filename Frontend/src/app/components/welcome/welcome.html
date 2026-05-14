@@ -1,31 +1,35 @@
-<div class="welcome-wrapper">
-  <div class="welcome-content">
-    <div class="hero-icon">🧠</div>
-    <h1 class="hero-title">מערכת למידה חכמה</h1>
-    <p class="hero-subtitle">למד כל נושא בעזרת בינה מלאכותית מתקדמת</p>
+<div class="welcome-container" dir="ltr" lang="en">
+  <mat-card class="welcome-card">
+    <mat-card-header>
+      <mat-card-title>
+        <span class="brand-logo brand-logo-hero">Learn<span class="brand-ai">AI</span>.</span>
+      </mat-card-title>
+      <mat-card-subtitle>Structured, AI-assisted lessons — built for clarity</mat-card-subtitle>
+    </mat-card-header>
 
-    <div class="features">
-      <div class="feature">
-        <span class="feature-icon">⚡</span>
-        <span>שיעורים מותאמים אישית</span>
-      </div>
-      <div class="feature">
-        <span class="feature-icon">📚</span>
-        <span>מאות נושאים ללמידה</span>
-      </div>
-      <div class="feature">
-        <span class="feature-icon">📊</span>
-        <span>מעקב התקדמות</span>
-      </div>
-    </div>
+    <mat-card-content class="buttons-area">
+      <div class="learner-actions">
+        <button mat-stroked-button class="app-link-button" routerLink="/login" type="button">
+          Sign in
+        </button>
 
-    <div class="action-buttons">
-      <button mat-raised-button routerLink="/login" class="btn-login">
-        יש לי חשבון — כניסה
-      </button>
-      <button mat-stroked-button routerLink="/register" class="btn-register">
-        אני חדש — הרשמה חינמית
-      </button>
-    </div>
-  </div>
+        <button mat-stroked-button class="app-link-button" routerLink="/register" type="button">
+          Create account
+        </button>
+      </div>
+
+      <div class="admin-access-wrap">
+        <button
+          mat-flat-button
+          class="admin-access-btn btn-accent-gradient"
+          routerLink="/login"
+          [queryParams]="{ mode: 'admin' }"
+          type="button"
+        >
+          <mat-icon aria-hidden="true">admin_panel_settings</mat-icon>
+          Admin Access
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

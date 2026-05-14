@@ -18,29 +18,29 @@ async function seedDatabase() {
 
     // Create categories
     const categories = [
-      { name: 'מתמטיקה' },
-      { name: 'היסטוריה' },
-      { name: 'מדעים' },
-      { name: 'שפות' },
-      { name: 'אמנות' }
+      { name: 'Mathematics' },
+      { name: 'History' },
+      { name: 'Science' },
+      { name: 'Languages' },
+      { name: 'Arts' },
     ];
 
     const createdCategories = await Category.insertMany(categories);
 
     // Create subcategories
     const subCategories = [
-      { name: 'חיבור וחיסור', category_id: createdCategories[0]._id },
-      { name: 'כפל וחילוק', category_id: createdCategories[0]._id },
-      { name: 'גיאומטריה', category_id: createdCategories[0]._id },
-      { name: 'היסטוריה עתיקה', category_id: createdCategories[1]._id },
-      { name: 'היסטוריה מודרנית', category_id: createdCategories[1]._id },
-      { name: 'פיזיקה', category_id: createdCategories[2]._id },
-      { name: 'כימיה', category_id: createdCategories[2]._id },
-      { name: 'ביולוגיה', category_id: createdCategories[2]._id },
-      { name: 'אנגלית', category_id: createdCategories[3]._id },
-      { name: 'עברית', category_id: createdCategories[3]._id },
-      { name: 'ציור', category_id: createdCategories[4]._id },
-      { name: 'מוזיקה', category_id: createdCategories[4]._id }
+      { name: 'Addition and subtraction', category_id: createdCategories[0]._id },
+      { name: 'Multiplication and division', category_id: createdCategories[0]._id },
+      { name: 'Geometry', category_id: createdCategories[0]._id },
+      { name: 'Ancient history', category_id: createdCategories[1]._id },
+      { name: 'Modern history', category_id: createdCategories[1]._id },
+      { name: 'Physics', category_id: createdCategories[2]._id },
+      { name: 'Chemistry', category_id: createdCategories[2]._id },
+      { name: 'Biology', category_id: createdCategories[2]._id },
+      { name: 'English', category_id: createdCategories[3]._id },
+      { name: 'Hebrew language', category_id: createdCategories[3]._id },
+      { name: 'Drawing', category_id: createdCategories[4]._id },
+      { name: 'Music', category_id: createdCategories[4]._id },
     ];
 
     await SubCategory.insertMany(subCategories);

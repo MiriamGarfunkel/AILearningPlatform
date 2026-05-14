@@ -22,7 +22,7 @@ const router = express.Router();
  *                 example: "64a1b2c3d4e5f6a7b8c9d0e1"
  *               name:
  *                 type: string
- *                 example: "אלגברה"
+ *                 example: "Algebra"
  *     responses:
  *       201:
  *         description: Sub-category created

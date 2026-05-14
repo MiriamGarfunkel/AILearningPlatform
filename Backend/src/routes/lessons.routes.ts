@@ -29,10 +29,10 @@ const router = express.Router();
  *                 example: "64a1b2c3d4e5f6a7b8c9d0e1"
  *               sub_category_id:
  *                 type: string
- *                 example: "אלגברה"
+ *                 example: "Algebra"
  *               prompt:
  *                 type: string
- *                 example: "תסביר לי מה זה משוואה"
+ *                 example: "Explain what an equation is in simple terms."
  *     responses:
  *       201:
  *         description: Lesson generated successfully
