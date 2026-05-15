@@ -1,6 +1,6 @@
-# AI-Driven Learning Platform
+# AI Learning Platform
 
-A full-stack MVP learning platform where users select a subject, send prompts to an AI, receive generated lessons, and review their learning history. Administrators can view all registered users and their full prompt history.
+A full-stack learning platform where users pick a subject, ask the AI a question, get a generated lesson, and can look back at their history. Admins can see all registered users and the full lesson log.
 
 ---
 
@@ -13,7 +13,7 @@ A full-stack MVP learning platform where users select a subject, send prompts to
 | Framework | Express 5 |
 | Database | MongoDB 7 via Mongoose 9 |
 | Authentication | JWT (jsonwebtoken) |
-| AI Integration | OpenAI GPT-3.5-turbo (with offline fallback) |
+| AI | OpenAI GPT-3.5-turbo (with offline fallback) |
 | Frontend | Angular 20 + Angular Material |
 | API Docs | Swagger / OpenAPI 3.0 |
 | Testing | Jest + ts-jest |
@@ -23,28 +23,28 @@ A full-stack MVP learning platform where users select a subject, send prompts to
 
 ## Features
 
-- **User registration & login** — learners register with ID, name, and phone (no password required)
-- **Admin login** — administrators sign in with email and password
-- **Category & sub-category selection** — users pick a subject area before generating a lesson
-- **AI lesson generation** — prompts are sent to OpenAI GPT-3.5-turbo; an offline stub is used when no API key is provided
-- **Learning history** — each user can view their own past lessons
-- **Admin dashboard** — admins can view all registered users and the full global lesson log, paginated
+- **User registration & login** — users register with ID, name, and phone (no password needed)
+- **Admin login** — admins sign in with email and password
+- **Category & sub-category selection** — users pick a subject before generating a lesson
+- **AI lesson generation** — questions are sent to OpenAI GPT-3.5-turbo; falls back to an offline stub if no API key is set
+- **Learning history** — each user can view their past lessons
+- **Admin dashboard** — admins can see all users and the full lesson log, paginated
 
 ---
 
 ## Architecture
 
-The backend follows a clean layered structure:
+The backend is structured in layers:
 
 ```
 Routes → Controllers → Services → Models (MongoDB)
 ```
 
-- **Routes** — define HTTP endpoints and attach middleware
-- **Controllers** — thin request/response handlers, no business logic
-- **Services** — all business logic, DB queries, and AI provider calls
+- **Routes** — define endpoints and attach middleware
+- **Controllers** — handle requests and responses, no business logic
+- **Services** — all the actual logic, DB queries, and AI calls
 - **Models** — Mongoose schemas (User, Category, SubCategory, Prompt)
-- **AI providers** — pluggable interface (`EducationalContentProvider`) with OpenAI and offline implementations
+- **AI providers** — swappable interface with OpenAI and offline implementations
 
 ---
 
@@ -54,14 +54,14 @@ Routes → Controllers → Services → Models (MongoDB)
 AILearningPlatform/
 ├── Backend/
 │   ├── src/
-│   │   ├── config/          # Typed env readers
-│   │   ├── controllers/     # Request handlers
+│   │   ├── config/          # env config
+│   │   ├── controllers/     # request handlers
 │   │   ├── middleware/       # JWT guard, error handler
 │   │   ├── models/          # Mongoose schemas
 │   │   ├── routes/          # Express routers
-│   │   ├── services/        # Business logic + AI providers
+│   │   ├── services/        # business logic + AI providers
 │   │   │   └── AI/          # OpenAI / offline implementations
-│   │   ├── shared/          # HttpError, sanitisers, helpers
+│   │   ├── shared/          # HttpError, input sanitizers
 │   │   ├── types/           # Express augmentation, API contracts
 │   │   ├── app.ts
 │   │   └── seed.ts
@@ -107,7 +107,7 @@ AILearningPlatform/
 | user_id | String | ref → User |
 | category_id | String | snapshot at request time |
 | sub_category_id | String | snapshot at request time |
-| prompt | String | learner's question |
+| prompt | String | user's question |
 | response | String | JSON-serialised AI lesson |
 | content_origin | String | `live_model` \| `offline_stub` |
 | created_at | Date | auto |
@@ -119,7 +119,7 @@ AILearningPlatform/
 ### Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- An OpenAI API key *(optional — offline stub works without one)*
+- An OpenAI API key *(optional — the offline stub works without one)*
 
 ### 1. Clone the repository
 
@@ -202,11 +202,11 @@ ADMIN_PHONE=<your-phone>
 
 | Mode | Behaviour |
 |------|-----------|
-| `auto` *(default)* | Uses OpenAI if `OPENAI_API_KEY` is set, otherwise falls back to offline stub |
-| `remote` | Forces OpenAI; falls back to offline stub if key is missing |
-| `offline` | Always uses the built-in offline stub — no external calls |
+| `auto` *(default)* | Uses OpenAI if `OPENAI_API_KEY` is set, otherwise falls back to the offline stub |
+| `remote` | Forces OpenAI; falls back to the offline stub if the key is missing |
+| `offline` | Always uses the offline stub — no external calls |
 
-> The offline stub generates a personalised response based on the user's category, topic, and question — no API key required.
+> The offline stub generates a response based on the user's category, topic, and question — no API key needed.
 
 ---
 
@@ -235,9 +235,9 @@ ADMIN_PHONE=<your-phone>
 ### AI / Lessons — `/api/ai`
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|
-| POST | `/generate` | user | Generate AI lesson, saves to history |
+| POST | `/generate` | user | Generate a lesson, saves to history |
 | GET | `/history/:user_id` | user | Get learning history (self or admin) |
-| GET | `/all` | admin | Get all prompts, paginated |
+| GET | `/all` | admin | Get all lessons, paginated |
 
 Full interactive docs: `http://localhost:5000/api-docs`
 
@@ -255,7 +255,7 @@ npm test
 
 ## Assumptions
 
-- Learners register and sign in with **ID + name + phone** (no password). JWTs are stateless with no revocation in this MVP.
-- Administrators are bootstrapped via `npm run seed:admin` and sign in with **email + password**.
-- The offline stub always returns an English lesson personalised to the user's category, topic, and question.
-- `category_id` and `sub_category_id` on `Prompt` are stored as string snapshots so history stays accurate if catalog labels change later.
+- Users register and sign in with **ID + name + phone** (no password). JWTs are stateless with no revocation in this MVP.
+- Admins are created via `npm run seed:admin` and sign in with **email + password**.
+- The offline stub always returns an English lesson based on the user's category, topic, and question.
+- `category_id` and `sub_category_id` on `Prompt` are stored as string snapshots so history stays accurate if category names change later.
