@@ -15,7 +15,7 @@ export interface PaginatedUsersEnvelope {
   count?: number;
 }
 
-export interface EducationalGenerationRequestBody {
+export interface GenerateLessonRequest {
   category_id: string;
   sub_category_id?: string;
   prompt: string;

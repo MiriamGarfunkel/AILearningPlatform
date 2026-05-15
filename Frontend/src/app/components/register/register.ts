@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, Router } from '@angular/router';
-import { LearningApiClient } from '../../core/learning-api.client';
+import { ApiClient } from '../../core/learning-api.client';
 
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
@@ -34,7 +34,7 @@ export class Register {
   };
 
   constructor(
-    private readonly gateway: LearningApiClient,
+    private readonly gateway: ApiClient,
     private readonly router: Router,
     private readonly snackBar: MatSnackBar,
   ) {}
@@ -44,7 +44,7 @@ export class Register {
       return;
     }
 
-    this.gateway.submitRegistrationEnvelope(this.userData).subscribe({
+    this.gateway.register(this.userData).subscribe({
       next: () => {
         this.snackBar.open('Account created. You can sign in now.', 'OK', {
           duration: 4000,

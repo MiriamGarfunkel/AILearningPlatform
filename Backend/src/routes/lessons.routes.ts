@@ -1,8 +1,8 @@
 import express from 'express';
 import {
-  submitEducationalGenerationRequest,
-  listLearnerStudyTimeline,
-  listOperatorStudyLedger,
+  generateLesson,
+  getUserHistory,
+  getAllHistory,
 } from '../controllers/lessons.controller';
 import { require_bearer_user, restrict_to_roles } from '../middleware/jwt-access.guard';
 
@@ -37,7 +37,7 @@ const router = express.Router();
  *       201:
  *         description: Lesson generated successfully
  */
-router.post('/generate', require_bearer_user, submitEducationalGenerationRequest);
+router.post('/generate', require_bearer_user, generateLesson);
 
 /**
  * @swagger
@@ -58,7 +58,7 @@ router.post('/generate', require_bearer_user, submitEducationalGenerationRequest
  *       200:
  *         description: Learning history
  */
-router.get('/history/:user_id', require_bearer_user, listLearnerStudyTimeline);
+router.get('/history/:user_id', require_bearer_user, getUserHistory);
 
 /**
  * @swagger
@@ -83,6 +83,6 @@ router.get('/history/:user_id', require_bearer_user, listLearnerStudyTimeline);
  *       200:
  *         description: All prompts paginated
  */
-router.get('/all', require_bearer_user, restrict_to_roles('admin'), listOperatorStudyLedger);
+router.get('/all', require_bearer_user, restrict_to_roles('admin'), getAllHistory);
 
 export default router;

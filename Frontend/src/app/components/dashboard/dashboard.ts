@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LearningApiClient } from '../../core/learning-api.client';
+import { ApiClient } from '../../core/learning-api.client';
 import { Router, RouterModule } from '@angular/router';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -59,13 +59,12 @@ export class Dashboard implements OnInit {
   isLoading = false;
   userName = '';
   lessonData: LessonViewModel | null = null;
-  /** Shown in-page after a lesson is saved (in addition to snackbar). */
   saveSuccess = false;
 
   isAdmin = false;
 
   constructor(
-    private readonly gateway: LearningApiClient,
+    private readonly gateway: ApiClient,
     private readonly router: Router,
     private readonly snackBar: MatSnackBar,
   ) {}
@@ -82,7 +81,7 @@ export class Dashboard implements OnInit {
   }
 
   loadCategories(): void {
-    this.gateway.fetchCategoryBranches().subscribe({
+    this.gateway.getCategories().subscribe({
       next: (res: any) => {
         this.categories = Array.isArray(res) ? res : res.data || [];
         this.filteredCategories = [...this.categories];
@@ -116,7 +115,7 @@ export class Dashboard implements OnInit {
 
   loadSubCategories(): void {
     if (!this.selectedCategoryId) return;
-    this.gateway.fetchTopicsForBranch(this.selectedCategoryId).subscribe((res: any) => {
+    this.gateway.getSubCategories(this.selectedCategoryId).subscribe((res: any) => {
       this.subCategories = Array.isArray(res) ? res : res.data || [];
       this.filteredSubCategories = [...this.subCategories];
     });
@@ -127,7 +126,7 @@ export class Dashboard implements OnInit {
     void this.router.navigate(['/login']);
   }
 
-  triggerEducationalPipeline(): void {
+  generateLesson(): void {
     if (!this.categorySearch || !this.userPrompt) {
       this.snackBar.open('Choose a category and enter what you want to learn.', 'OK', {
         duration: 4000,
@@ -145,11 +144,11 @@ export class Dashboard implements OnInit {
     );
 
     if (!category) {
-      this.gateway.proposeCategoryBranch({ name: this.categorySearch }).subscribe({
+      this.gateway.createCategory({ name: this.categorySearch }).subscribe({
         next: (newCat: any) => {
           this.categories.push(newCat);
           this.selectedCategoryId = newCat._id;
-          this.handleSubCategoryAndSend();
+          this.resolveSubCategoryAndSend();
         },
         error: (err) => {
           this.isLoading = false;
@@ -160,11 +159,11 @@ export class Dashboard implements OnInit {
       });
     } else {
       this.selectedCategoryId = category._id;
-      this.handleSubCategoryAndSend();
+      this.resolveSubCategoryAndSend();
     }
   }
 
-  private handleSubCategoryAndSend(): void {
+  private resolveSubCategoryAndSend(): void {
     const existingSub = this.subCategories.find(
       (s) => String(s.name).toLowerCase() === this.subCategorySearch.toLowerCase(),
     );
@@ -182,9 +181,9 @@ export class Dashboard implements OnInit {
       prompt: this.userPrompt,
     };
 
-    this.gateway.submitEducationalContentRequest(payload).subscribe({
+    this.gateway.generateLesson(payload).subscribe({
       next: (res: any) => {
-        this.applyLessonFromApiResponse(
+        this.parseLessonResponse(
           res,
           this.categorySearch,
           this.subCategorySearch || 'General',
@@ -215,11 +214,7 @@ export class Dashboard implements OnInit {
     });
   }
 
-  /**
-   * Maps API `{ success, data: savedPrompt }` into the lesson card.
-   * Backend stores JSON in `response` with `explanation`, `task`, optional `exercises`, `content`.
-   */
-  private applyLessonFromApiResponse(
+  private parseLessonResponse(
     body: Record<string, unknown>,
     categoryLabel: string,
     subCategoryLabel: string,

@@ -1,4 +1,4 @@
-import type { EducationalContentProvider, LessonGenerationContext } from './educational-content-provider';
+import type { EducationalContentProvider, LessonGenerationContext } from './ai-provider';
 
 export class OfflineEducationalContentProvider implements EducationalContentProvider {
   readonly providerChannel = 'offline_stub' as const;

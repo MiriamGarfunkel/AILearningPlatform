@@ -4,7 +4,7 @@ import * as registry from '../services/user-registry.service';
 import User from '../models/User';
 import HttpError from '../shared/http-error';
 import { optional_trimmed_string, require_non_empty_string } from '../shared/input-sanitize';
-import { mintBearerTokenForSubject } from '../services/auth-tokens.service';
+import { createToken } from '../services/auth-tokens.service';
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -21,14 +21,14 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
       return next(new HttpError('This phone number is already registered to another user.', 400));
     }
 
-    const user = await registry.registerIdentityRecord({
+    const user = await registry.createUser({
       _id: id,
       name,
       phone,
       role: 'user',
     });
 
-    const token = mintBearerTokenForSubject(String(user._id));
+    const token = createToken(String(user._id));
 
     res.status(201).json({
       success: true,
@@ -64,7 +64,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
         return next(new HttpError('Invalid email or password.', 401));
       }
 
-      const token = mintBearerTokenForSubject(String(user._id));
+      const token = createToken(String(user._id));
       res.status(200).json({ success: true, token, data: user.toJSON() });
       return;
     }
@@ -85,7 +85,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
       return next(new HttpError('Sign-in failed: name or phone does not match this ID.', 401));
     }
 
-    const token = mintBearerTokenForSubject(String(user._id));
+    const token = createToken(String(user._id));
 
     res.status(200).json({ success: true, token, data: user });
   } catch (error) {
@@ -123,7 +123,7 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
 export const getUserById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const user = await registry.locateIdentityByPrimaryKey(String(id));
+    const user = await registry.findUserById(String(id));
 
     if (!user) {
       return next(new HttpError('User not found.', 404));

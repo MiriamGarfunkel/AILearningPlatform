@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { LearningApiClient } from '../../core/learning-api.client';
+import { ApiClient } from '../../core/learning-api.client';
 import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
@@ -36,7 +36,7 @@ export class Login implements OnInit {
   private postLoginRedirect: string | null = null;
 
   constructor(
-    private readonly gateway: LearningApiClient,
+    private readonly gateway: ApiClient,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly snackBar: MatSnackBar,
@@ -93,7 +93,7 @@ export class Login implements OnInit {
           phone: this.phone,
         };
 
-    this.gateway.establishSession(loginPayload).subscribe({
+    this.gateway.login(loginPayload).subscribe({
       next: (res: any) => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('userId', res.data._id);

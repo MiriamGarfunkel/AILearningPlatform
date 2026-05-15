@@ -1,5 +1,5 @@
-import { submitEducationalGenerationRequest, listLearnerStudyTimeline } from './lessons.controller';
-import * as sessions from '../services/educational-sessions.service';
+import { generateLesson, getUserHistory } from './lessons.controller';
+import * as sessions from '../services/lessons.service';
 
 jest.mock('../services/educational-sessions.service');
 
@@ -30,27 +30,27 @@ describe('Lessons controller', () => {
     req.user = null;
     req.body.user_id = null;
 
-    await submitEducationalGenerationRequest(req, res, next);
+    await generateLesson(req, res, next);
 
     expect(next).toHaveBeenCalledWith(expect.objectContaining({ statusCode: 401 }));
   });
 
   it('returns 201 when service persists attempt', async () => {
-    (sessions.persistLearnerContentAttempt as jest.Mock).mockResolvedValue({
+    (sessions.saveLesson as jest.Mock).mockResolvedValue({
       _id: 'p1',
       user_id: 'user123',
     });
 
-    await submitEducationalGenerationRequest(req, res, next);
+    await generateLesson(req, res, next);
 
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
   });
 
   it('surfaces 503 when service throws', async () => {
-    (sessions.persistLearnerContentAttempt as jest.Mock).mockRejectedValue(new Error('fail'));
+    (sessions.saveLesson as jest.Mock).mockRejectedValue(new Error('fail'));
 
-    await submitEducationalGenerationRequest(req, res, next);
+    await generateLesson(req, res, next);
 
     expect(next).toHaveBeenCalledWith(expect.objectContaining({ statusCode: 503 }));
   });
@@ -69,24 +69,24 @@ describe('Learner history', () => {
 
   it('returns 403 when a non-admin requests another user timeline', async () => {
     req = { params: { user_id: 'other' }, user: { _id: 'self', role: 'user' } };
-    await listLearnerStudyTimeline(req, res, next);
+    await getUserHistory(req, res, next);
     expect(next).toHaveBeenCalledWith(expect.objectContaining({ statusCode: 403 }));
-    expect(sessions.listTimelineForLearner).not.toHaveBeenCalled();
+    expect(sessions.getUserHistory).not.toHaveBeenCalled();
   });
 
   it('returns history when user_id matches authenticated subject', async () => {
-    (sessions.listTimelineForLearner as jest.Mock).mockResolvedValue([{ _id: 'p1' }]);
+    (sessions.getUserHistory as jest.Mock).mockResolvedValue([{ _id: 'p1' }]);
     req = { params: { user_id: 'self' }, user: { _id: 'self', role: 'user' } };
-    await listLearnerStudyTimeline(req, res, next);
-    expect(sessions.listTimelineForLearner).toHaveBeenCalledWith('self');
+    await getUserHistory(req, res, next);
+    expect(sessions.getUserHistory).toHaveBeenCalledWith('self');
     expect(res.json).toHaveBeenCalledWith([{ _id: 'p1' }]);
   });
 
   it('allows admin to read any learner timeline', async () => {
-    (sessions.listTimelineForLearner as jest.Mock).mockResolvedValue([]);
+    (sessions.getUserHistory as jest.Mock).mockResolvedValue([]);
     req = { params: { user_id: 'anyone' }, user: { _id: 'admin1', role: 'admin' } };
-    await listLearnerStudyTimeline(req, res, next);
-    expect(sessions.listTimelineForLearner).toHaveBeenCalledWith('anyone');
+    await getUserHistory(req, res, next);
+    expect(sessions.getUserHistory).toHaveBeenCalledWith('anyone');
     expect(res.json).toHaveBeenCalledWith([]);
   });
 });

@@ -113,7 +113,7 @@
               class="generate-btn btn-accent-gradient"
               type="button"
               [disabled]="isLoading || !categorySearch || !userPrompt"
-              (click)="triggerEducationalPipeline()"
+              (click)="generateLesson()"
             >
               <mat-spinner diameter="22" *ngIf="isLoading"></mat-spinner>
               <span *ngIf="!isLoading" class="generate-btn-label">Generate &amp; save lesson</span>

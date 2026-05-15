@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import SubCategory from '../models/SubCategory';
 
-export async function insertTopicRecord(primaryKey: string, categoryRef: string, label: string) {
+export async function createSubCategory(primaryKey: string, categoryRef: string, label: string) {
   if (!mongoose.Types.ObjectId.isValid(categoryRef)) {
     throw new Error('Invalid category reference');
   }
@@ -13,7 +13,7 @@ export async function insertTopicRecord(primaryKey: string, categoryRef: string,
   return row.save();
 }
 
-export async function listTopicsUnderBranch(branchId: string) {
+export async function getSubCategories(branchId: string) {
   if (!mongoose.Types.ObjectId.isValid(branchId)) {
     return [];
   }

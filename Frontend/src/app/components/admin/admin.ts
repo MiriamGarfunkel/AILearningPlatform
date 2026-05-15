@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { LearningApiClient } from '../../core/learning-api.client';
+import { ApiClient } from '../../core/learning-api.client';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -42,7 +42,7 @@ export class Admin implements OnInit {
   historyColumns: string[] = ['userName', 'date', 'prompt', 'view'];
 
   constructor(
-    private readonly gateway: LearningApiClient,
+    private readonly gateway: ApiClient,
     private readonly dialog: MatDialog,
   ) {}
 
@@ -52,7 +52,7 @@ export class Admin implements OnInit {
   }
 
   loadUsers(page = 1, limit = 10) {
-    this.gateway.fetchOperatorDirectoryPage(page, limit).subscribe({
+    this.gateway.fetchUsers(page, limit).subscribe({
       next: (res) => {
         this.allUsers = res.data ?? [];
         this.totalUsers = res.total ?? 0;
@@ -63,7 +63,7 @@ export class Admin implements OnInit {
 
   loadGlobalHistory(page = 1, limit = 10) {
     this.scopedLearnerId = null;
-    this.gateway.fetchGlobalStudyLedgerPage(page, limit).subscribe({
+    this.gateway.getAllHistory(page, limit).subscribe({
       next: (res: any) => {
         this.allHistory = res.data ?? [];
         this.totalHistory = res.total ?? 0;
@@ -95,7 +95,7 @@ export class Admin implements OnInit {
   }
 
   private loadScopedHistory(userId: string, page: number, limit: number) {
-    this.gateway.fetchLearnerTimeline(userId).subscribe({
+    this.gateway.getUserHistory(userId).subscribe({
       next: (res: any) => {
         const rows = Array.isArray(res) ? res : [];
         const skip = (page - 1) * limit;

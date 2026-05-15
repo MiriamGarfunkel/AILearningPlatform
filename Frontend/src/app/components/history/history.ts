@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { LearningApiClient } from '../../core/learning-api.client';
+import { ApiClient } from '../../core/learning-api.client';
 import { LessonDialog } from '../lesson-dialog/lesson-dialog';
 import { toEnglishUiText } from '../../shared/english-display';
 
@@ -38,7 +38,7 @@ export class History implements OnInit {
   isAdmin: boolean = false;
 
   constructor(
-    private readonly gateway: LearningApiClient,
+    private readonly gateway: ApiClient,
     private dialog: MatDialog,
   ) {}
 
@@ -53,8 +53,8 @@ export class History implements OnInit {
 
     this.isLoading = true;
     const historyCall = this.isAdmin
-      ? this.gateway.fetchGlobalStudyLedgerPage()
-      : this.gateway.fetchLearnerTimeline(userId);
+      ? this.gateway.getAllHistory()
+      : this.gateway.getUserHistory(userId);
 
     historyCall.subscribe({
       next: (res: any) => {

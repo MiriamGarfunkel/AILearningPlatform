@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
-import * as topics from '../services/catelog-topics.service';
+import * as subcategoriesService from '../services/subcategories.service';
 import HttpError from '../shared/http-error';
 import { require_non_empty_string } from '../shared/input-sanitize';
 
@@ -14,7 +14,7 @@ export const createSubCategory = async (req: Request, res: Response, next: NextF
       return next(new HttpError('Invalid category id.', 400));
     }
 
-    const subCategory = await topics.insertTopicRecord(_id, category_id, name);
+    const subCategory = await subcategoriesService.createSubCategory(_id, category_id, name);
     res.status(201).json(subCategory);
   } catch (error) {
     if (error instanceof Error && error.message.includes('is required')) {
@@ -30,7 +30,7 @@ export const createSubCategory = async (req: Request, res: Response, next: NextF
 export const getSubCategories = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const categoryId = String(req.params.categoryId ?? '');
-    const subCategories = await topics.listTopicsUnderBranch(String(categoryId));
+    const subCategories = await subcategoriesService.getSubCategories(categoryId);
     res.status(200).json(subCategories);
   } catch (error) {
     next(error);

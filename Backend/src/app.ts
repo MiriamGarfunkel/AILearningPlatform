@@ -10,8 +10,8 @@ import swaggerUi from 'swagger-ui-express';
 import { readHttpListenPort, readMongoConnectionString } from './config/env';
 import { global_error_handler } from './middleware/global-error.handler';
 import lessonsRouter from './routes/lessons.routes';
-import catalogCategoriesRouter from './routes/catelog-categories.routes';
-import catalogTopicsRouter from './routes/catelog-topics.routes';
+import catalogCategoriesRouter from './routes/categories.routes';
+import catalogTopicsRouter from './routes/subcategories.routes';
 import usersRouter from './routes/user.routes';
 
 const app = express();
@@ -34,9 +34,9 @@ const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Adaptive Lesson Studio API',
+      title: 'AI Learning Platform API',
       version: '1.0.0',
-      description: 'HTTP surface for the AI-assisted learning workspace',
+      description: 'Backend API for the AI learning platform',
     },
     servers: [
       {

@@ -1,7 +1,7 @@
 import OpenAI from 'openai';
-import type { EducationalContentProvider, LessonGenerationContext } from './educational-content-provider';
+import type { EducationalContentProvider, LessonGenerationContext } from './ai-provider';
 
-const ENGLISH_SYSTEM_PROMPT = `You are an expert educational assistant.
+const SYSTEM_PROMPT = `You are an expert educational assistant.
 Rules:
 - Write EVERY string in the JSON output in English only (topic, explanation, task, and any other fields).
 - Never include Hebrew, Arabic, Cyrillic, or any non-Latin script in JSON values. If source labels are non-English, translate the teaching content into English; you may mention the original topic once in Latin transliteration only if essential.
@@ -35,7 +35,7 @@ Remember: all values must be English text only.`;
     const response = await this.client.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
-        { role: 'system', content: ENGLISH_SYSTEM_PROMPT },
+        { role: 'system', content: SYSTEM_PROMPT },
         { role: 'user', content: userMessage },
       ],
       response_format: { type: 'json_object' },

@@ -1,6 +1,6 @@
-import { resolveEducationalPayloadForLabels } from './educational-delivery.facade';
+import { getLesson } from './ai.service';
 
-describe('Educational delivery facade', () => {
+describe('AI service', () => {
   const prevKey = process.env.OPENAI_API_KEY;
   const prevMode = process.env.AI_PROVIDER_MODE;
 
@@ -15,7 +15,7 @@ describe('Educational delivery facade', () => {
     process.env.AI_PROVIDER_MODE = 'offline';
     delete process.env.OPENAI_API_KEY;
 
-    const out = await resolveEducationalPayloadForLabels('Physics', 'Gravity', 'why?');
+    const out = await getLesson('Physics', 'Gravity', 'why?');
     expect(out.content_origin).toBe('offline_stub');
     expect(out.payload.topic).toBeDefined();
   });

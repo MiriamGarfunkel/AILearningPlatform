@@ -1,5 +1,5 @@
 import express from 'express';
-import { createSubCategory, getSubCategories } from '../controllers/catalog-topics.controller';
+import { createSubCategory, getSubCategories } from '../controllers/subcategories.controller';
 
 const router = express.Router();
 
