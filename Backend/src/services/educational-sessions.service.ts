@@ -39,7 +39,7 @@ export async function persistLearnerContentAttempt(input: PersistAttemptInput) {
   const row = new Prompt({
     user_id: input.learnerSubjectId,
     category_id: input.branchDocumentId,
-    sub_category_id: input.topicDescriptor || 'General',
+    sub_category_id: topicLabel || 'General',
     prompt: promptStored,
     response: JSON.stringify(payloadEnglishOnly),
     content_origin,

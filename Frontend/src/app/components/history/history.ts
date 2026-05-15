@@ -70,12 +70,16 @@ export class History implements OnInit {
   }
 
   rowTopic(row: any): string {
-    const raw = row.sub_category_id?.name ?? row.sub_category_id ?? 'General';
-    return toEnglishUiText(String(raw), 'General');
+    // sub_category_id is stored as a name snapshot string, not a populated object
+    const raw = typeof row.sub_category_id === 'object' && row.sub_category_id?.name
+      ? row.sub_category_id.name
+      : row.sub_category_name ?? row.sub_category_id ?? '';
+    const isMongoId = /^[a-f\d]{24}$/i.test(String(raw));
+    return isMongoId ? (row.sub_category_name ?? '—') : (String(raw) || '—');
   }
 
   rowPrompt(row: any): string {
-    return toEnglishUiText(String(row.prompt ?? ''), '—');
+    return String(row.prompt ?? '—');
   }
 
 viewLesson(element: any) {
@@ -93,16 +97,15 @@ viewLesson(element: any) {
     const exercisesRaw = parsedResponse.exercises || (parsedResponse.task ? [parsedResponse.task] : []);
 
     const dialogData = {
-      topic: toEnglishUiText(String(topicRaw), 'Saved lesson'),
-      content: toEnglishUiText(String(contentRaw), '(No English text in this record.)'),
-      exercises: exercisesRaw.map((x: unknown) => toEnglishUiText(String(x), '(Item omitted.)')),
+      topic: String(topicRaw),
+      content: String(contentRaw),
+      exercises: exercisesRaw.map((x: unknown) => String(x)),
     };
 
     this.dialog.open(LessonDialog, {
       width: '640px',
       maxWidth: '95vw',
       data: dialogData,
-      direction: 'ltr',
     });
   }
 
