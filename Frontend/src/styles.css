@@ -246,10 +246,16 @@ mat-toolbar {
 .mat-mdc-header-cell {
   color: var(--app-fg) !important;
   font-size: 1rem !important;
+  text-align: left !important;
+  padding-inline-start: 16px !important;
+  padding-inline-end: 8px !important;
 }
 
 .mat-mdc-cell {
   color: var(--app-fg) !important;
+  unicode-bidi: plaintext;
+  padding-inline-start: 16px !important;
+  padding-inline-end: 16px !important;
 }
 
 .mat-mdc-paginator {

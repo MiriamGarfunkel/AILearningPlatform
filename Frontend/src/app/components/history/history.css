@@ -50,8 +50,6 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 24px 22px;
-  direction: ltr;
-  text-align: left;
   background: rgba(255, 255, 255, 0.04) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -83,12 +81,15 @@ th.mat-mdc-header-cell {
   font-weight: 800 !important;
   font-size: 1.05rem !important;
   text-align: left !important;
-  padding: 16px !important;
+  padding-block: 16px !important;
+  padding-inline-start: 16px !important;
   border-bottom: 1px solid var(--app-border);
 }
 
 td.mat-mdc-cell {
-  padding: 14px 16px !important;
+  padding-block: 14px !important;
+  padding-inline-start: 16px !important;
+  padding-inline-end: 16px !important;
   max-width: 280px;
   white-space: nowrap;
   overflow: hidden;
@@ -96,6 +97,7 @@ td.mat-mdc-cell {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   color: var(--app-fg) !important;
   font-size: 1.05rem;
+  unicode-bidi: plaintext;
 }
 
 tr.mat-mdc-row:hover {

@@ -162,8 +162,7 @@
   justify-content: center;
   padding-top: 60px;
   padding-bottom: 80px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-inline: 16px;
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: visible;
@@ -418,10 +417,11 @@ mat-card-subtitle {
   line-height: 1.7;
   white-space: pre-wrap;
   color: var(--app-fg);
-  text-align: center;
+  text-align: start;
+  unicode-bidi: plaintext;
   max-width: 640px;
   margin: 0 auto;
-  padding: 0 8px;
+  padding-inline: 8px;
 }
 
 .exercise-list {
@@ -429,7 +429,6 @@ mat-card-subtitle {
   padding: 0;
   margin: 0 auto;
   max-width: 640px;
-  text-align: center;
 }
 
 .exercise-item {
@@ -438,7 +437,8 @@ mat-card-subtitle {
   padding: 18px 12px;
   border-bottom: 1px solid var(--app-border);
   opacity: 0.98;
-  text-align: center;
+  text-align: start;
+  unicode-bidi: plaintext;
   color: var(--app-fg);
 }
 

@@ -9,7 +9,6 @@ import { RouterLink } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { LessonDialog } from '../lesson-dialog/lesson-dialog';
-import { toEnglishUiText } from '../../shared/english-display';
 
 @Component({
   selector: 'app-admin',
@@ -48,8 +47,8 @@ export class Admin implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadUsers();
-    this.loadGlobalHistory();
+    this.loadUsers(1, this.userPageSize);
+    this.loadGlobalHistory(1, this.historyPageSize);
   }
 
   loadUsers(page = 1, limit = 10) {
@@ -108,15 +107,15 @@ export class Admin implements OnInit {
   }
 
   displayUserName(user: { name?: string }): string {
-    return toEnglishUiText(String(user?.name ?? ''), '—');
+    return String(user?.name ?? '—');
   }
 
   displayLearner(entry: { user_id?: { name?: string } }): string {
-    return toEnglishUiText(String(entry.user_id?.name ?? 'Unknown user'), 'Unknown user');
+    return String(entry.user_id?.name ?? 'Unknown user');
   }
 
   displayPrompt(entry: { prompt?: string }): string {
-    return toEnglishUiText(String(entry.prompt ?? ''), '—');
+    return String(entry.prompt ?? '—');
   }
 
   resetHistoryScope() {
@@ -145,16 +144,15 @@ export class Admin implements OnInit {
         : []);
 
     const dialogData = {
-      topic: toEnglishUiText(String(topicRaw), 'Saved lesson'),
-      content: toEnglishUiText(String(contentRaw), '(No English text in this record.)'),
-      exercises: exercisesRaw.map((x) => toEnglishUiText(String(x), '—')),
+      topic: String(topicRaw),
+      content: String(contentRaw),
+      exercises: exercisesRaw.map((x) => String(x)),
     };
 
     this.dialog.open(LessonDialog, {
       width: '640px',
       maxWidth: '95vw',
       data: dialogData,
-      direction: 'ltr',
     });
   }
 }

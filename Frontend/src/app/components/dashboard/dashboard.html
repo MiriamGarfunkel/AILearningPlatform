@@ -64,7 +64,7 @@
                   name="category"
                   placeholder="Search or type a new category"
                   [matAutocomplete]="auto"
-                  (input)="filterCategories()"
+                  (ngModelChange)="filterCategories()"
                   autocomplete="off"
                 />
                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCategorySelected($event)">
@@ -83,7 +83,7 @@
                   name="subCategory"
                   placeholder="Optional — narrows the lesson"
                   [matAutocomplete]="autoSub"
-                  (input)="filterSubCategories()"
+                  (ngModelChange)="filterSubCategories()"
                   autocomplete="off"
                 />
                 <mat-autocomplete #autoSub="matAutocomplete">
@@ -100,6 +100,7 @@
                   [(ngModel)]="userPrompt"
                   name="prompt"
                   rows="5"
+                  dir="auto"
                   placeholder="Example: Explain Newton's laws in simple terms."
                   autocomplete="off"
                 ></textarea>

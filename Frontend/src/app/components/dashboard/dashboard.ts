@@ -174,8 +174,6 @@ export class Dashboard implements OnInit {
 
   private sendToAI(): void {
     const userId = localStorage.getItem('userId');
-    const cleanCategory = this.categorySearch;
-    const cleanSubCategory = this.subCategorySearch || 'General';
 
     const payload = {
       user_id: userId,
@@ -188,8 +186,8 @@ export class Dashboard implements OnInit {
       next: (res: any) => {
         this.applyLessonFromApiResponse(
           res,
-          toEnglishUiText(cleanCategory, 'General'),
-          toEnglishUiText(cleanSubCategory, 'General'),
+          this.categorySearch,
+          this.subCategorySearch || 'General',
         );
         this.isLoading = false;
         this.saveSuccess = !!this.lessonData;
@@ -262,10 +260,10 @@ export class Dashboard implements OnInit {
     const exercises: string[] = [];
     if (Array.isArray(exercisesRaw)) {
       for (const ex of exercisesRaw) {
-        exercises.push(toEnglishUiText(String(ex), '(Practice item omitted.)'));
+        exercises.push(String(ex));
       }
     } else if (typeof task === 'string' && task.trim()) {
-      exercises.push(toEnglishUiText(task.trim(), '(Practice item omitted.)'));
+      exercises.push(task.trim());
     }
 
     const bodyText =
@@ -283,12 +281,10 @@ export class Dashboard implements OnInit {
       '(No English lesson text available.)',
     );
 
-    const topicLabel = toEnglishUiText(
+    const topicLabel =
       typeof topicFromPayload === 'string' && topicFromPayload.trim()
         ? topicFromPayload.trim()
-        : `${categoryLabelEn} — ${subCategoryLabelEn}`,
-      'Lesson',
-    );
+        : `${categoryLabel} — ${subCategoryLabel}`;
 
     const isMock =
       parsed['isMock'] === true ||

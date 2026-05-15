@@ -3,7 +3,7 @@ import Prompt from '../models/Prompt';
 import Category from '../models/Category';
 import SubCategory from '../models/SubCategory';
 import { resolveEducationalPayloadForLabels } from './educational-delivery.facade';
-import { stripHebrewFromDeep, stripHebrewScript } from '../shared/strip-hebrew-script';
+import { stripHebrewScript } from '../shared/strip-hebrew-script';
 
 export interface PersistAttemptInput {
   readonly learnerSubjectId: string;
@@ -29,7 +29,11 @@ export async function persistLearnerContentAttempt(input: PersistAttemptInput) {
     input.learnerPromptText,
   );
 
-  const payloadEnglishOnly = stripHebrewFromDeep(payload) as Record<string, unknown>;
+  const payloadEnglishOnly = {
+    ...payload,
+    explanation: typeof payload.explanation === 'string' ? payload.explanation : payload.explanation,
+    task: typeof payload.task === 'string' ? payload.task : payload.task,
+  };
   const promptStored = (input.learnerPromptText || '').trim() || 'No prompt provided';
 
   const row = new Prompt({

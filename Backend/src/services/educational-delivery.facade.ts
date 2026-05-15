@@ -24,7 +24,7 @@ export async function resolveEducationalPayloadForLabels(
 
   if (mode === 'offline') {
     const payload = await offlineProvider.fetchStructuredLesson(disciplineLabel, topicLabel, ctx);
-    return { payload: enrichWithLearnerQuestion(payload, learnerQuestion), content_origin: 'offline_stub' };
+    return { payload, content_origin: 'offline_stub' };
   }
 
   if (mode === 'remote' && hasOpenAiCredential()) {
@@ -35,7 +35,7 @@ export async function resolveEducationalPayloadForLabels(
 
   if (mode === 'remote' && !hasOpenAiCredential()) {
     const payload = await offlineProvider.fetchStructuredLesson(disciplineLabel, topicLabel, ctx);
-    return { payload: enrichWithLearnerQuestion(payload, learnerQuestion), content_origin: 'offline_stub' };
+    return { payload, content_origin: 'offline_stub' };
   }
 
   // auto
@@ -50,7 +50,7 @@ export async function resolveEducationalPayloadForLabels(
   }
 
   const payload = await offlineProvider.fetchStructuredLesson(disciplineLabel, topicLabel, ctx);
-  return { payload: enrichWithLearnerQuestion(payload, learnerQuestion), content_origin: 'offline_stub' };
+  return { payload, content_origin: 'offline_stub' };
 }
 
 function enrichWithLearnerQuestion(
