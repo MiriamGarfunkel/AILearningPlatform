@@ -26,6 +26,7 @@ interface LessonViewModel {
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.html',
+  styleUrl: './dashboard.css',
   standalone: true,
   imports: [
     CommonModule,

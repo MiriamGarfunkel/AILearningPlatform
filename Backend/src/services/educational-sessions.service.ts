@@ -30,8 +30,7 @@ export async function persistLearnerContentAttempt(input: PersistAttemptInput) {
   );
 
   const payloadEnglishOnly = stripHebrewFromDeep(payload) as Record<string, unknown>;
-  const promptStored =
-    stripHebrewScript(input.learnerPromptText || '') || 'No prompt provided';
+  const promptStored = (input.learnerPromptText || '').trim() || 'No prompt provided';
 
   const row = new Prompt({
     user_id: input.learnerSubjectId,

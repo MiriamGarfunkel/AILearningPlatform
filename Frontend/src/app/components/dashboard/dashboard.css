@@ -1,5 +1,5 @@
 .dashboard-shell {
-  min-height: auto;
+  min-height: 100vh;
   background: var(--app-bg);
   color: var(--app-fg);
 }
@@ -25,15 +25,16 @@
 
 .toolbar-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  gap: 16px 24px;
+  gap: 0 12px;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
   min-height: 80px;
+  overflow: hidden;
 }
 
 .toolbar-brand {
@@ -42,31 +43,33 @@
 }
 
 .nav-links {
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-  gap: 12px 20px;
+  gap: 8px;
   min-width: 0;
 }
 
 @media (max-width: 900px) {
   .toolbar-row {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
     padding: 12px 1.25rem;
     min-height: auto;
-    gap: 14px;
+    gap: 10px;
   }
 
   .nav-links {
     justify-content: center;
+    flex-wrap: wrap;
   }
 
   .toolbar-user {
     justify-content: center;
+    flex-wrap: wrap;
   }
 
   .welcome-stack {
@@ -116,8 +119,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 12px 16px;
+  flex-wrap: nowrap;
+  gap: 8px 12px;
   min-width: 0;
 }
 
@@ -127,7 +130,7 @@
   align-items: flex-end;
   text-align: right;
   min-width: 0;
-  max-width: min(320px, 42vw);
+  max-width: min(180px, 22vw);
   gap: 2px;
   unicode-bidi: isolate;
 }
@@ -141,7 +144,7 @@
 }
 
 .welcome-name {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: var(--app-fg);
   line-height: 1.35;
@@ -156,8 +159,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding-top: 100px;
+  justify-content: center;
+  padding-top: 60px;
   padding-bottom: 80px;
   padding-left: 16px;
   padding-right: 16px;
@@ -165,7 +168,7 @@
   overflow-x: hidden;
   overflow-y: visible;
   scroll-behavior: smooth;
-  min-height: auto;
+  min-height: calc(100vh - 80px);
 }
 
 .center-stack {
@@ -350,11 +353,9 @@ mat-card-subtitle {
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
-  padding: 8px 0 8px;
+  padding: 8px 16px;
   animation: fadeIn 0.45s ease-out;
-  border-top: none;
-  margin-top: 0;
-  padding-top: 8px;
+  box-sizing: border-box;
 }
 
 .lesson-header {

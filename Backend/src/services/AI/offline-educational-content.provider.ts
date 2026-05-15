@@ -4,16 +4,19 @@ export class OfflineEducationalContentProvider implements EducationalContentProv
   readonly providerChannel = 'offline_stub' as const;
 
   async fetchStructuredLesson(
-    _disciplineLabel: string,
-    _topicLabel: string,
-    _context?: LessonGenerationContext,
+    disciplineLabel: string,
+    topicLabel: string,
+    context?: LessonGenerationContext,
   ): Promise<Record<string, unknown>> {
+    const subject = [disciplineLabel, topicLabel].filter(Boolean).join(' — ');
+    const question = context?.learnerQuestion ?? 'your question';
     return {
-      topic: 'Offline study module (English)',
+      topic: `${subject} (Offline demo)`,
       explanation:
-        'This placeholder runs when no live AI provider is available. All catalog labels and learner questions are processed on the server with an English-only policy for generated text. Connect OpenAI (OPENAI_API_KEY) for full lessons tied to your categories.',
+        `You asked: "${question}". This is an offline lesson about ${subject}. ` +
+        `To get a real AI-generated answer, add your OpenAI API key to the OPENAI_API_KEY variable in Backend/.env and restart.`,
       task:
-        'In English, write three sentences stating what you want to learn next, then name one English book or article you will search for.',
+        `Write 3 things you already know about ${subject}, then write 2 questions you still have.`,
       isMock: true,
     };
   }
