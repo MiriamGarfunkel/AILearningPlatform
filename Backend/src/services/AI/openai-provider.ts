@@ -33,7 +33,7 @@ Return a single JSON object with exactly these keys:
 Remember: all values must be English text only.`;
 
     const response = await this.client.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4o',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         { role: 'user', content: userMessage },

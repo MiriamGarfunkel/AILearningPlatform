@@ -21,6 +21,7 @@ services:
       JWT_EXPIRE: ${JWT_EXPIRE:-30d}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       AI_PROVIDER_MODE: ${AI_PROVIDER_MODE:-auto}
+      NODE_TLS_REJECT_UNAUTHORIZED: ${NODE_TLS_REJECT_UNAUTHORIZED:-0}
     depends_on:
       - mongo
 
