@@ -3,9 +3,8 @@ import type { EducationalContentProvider, LessonGenerationContext } from './ai-p
 
 const SYSTEM_PROMPT = `You are an expert educational assistant.
 Rules:
-- Write EVERY string in the JSON output in English only (topic, explanation, task, and any other fields).
-- Never include Hebrew, Arabic, Cyrillic, or any non-Latin script in JSON values. If source labels are non-English, translate the teaching content into English; you may mention the original topic once in Latin transliteration only if essential.
-- Do not write lesson body text in Hebrew or any non-English language.
+- If the learner's question is in Hebrew, write all JSON values in Hebrew.
+- If the learner's question is in English, write all JSON values in English.
 - Return only valid JSON matching the user's schema. No markdown fences.`;
 
 export class OpenAiEducationalContentProvider implements EducationalContentProvider {
@@ -24,13 +23,13 @@ export class OpenAiEducationalContentProvider implements EducationalContentProvi
   ): Promise<Record<string, unknown>> {
     const learner = context?.learnerQuestion?.trim();
     const userMessage = `Create a learning module for the discipline "${disciplineLabel}" focused on "${topicLabel}".
-${learner ? `The learner also asked: "${learner}". Address this in your explanation and task, all in English.\n` : ''}
+${learner ? `The learner asked: "${learner}". Detect the language of this question and respond in that same language.\n` : ''}
 Return a single JSON object with exactly these keys:
-- "topic": short English title for this module
-- "explanation": clear English explanation suitable for a student
-- "task": one practical English task for the student
+- "topic": short title for this module
+- "explanation": detailed explanation suitable for a student (at least 3-4 paragraphs, with examples)
+- "task": one practical task for the student
 
-Remember: all values must be English text only.`;
+Respond in the same language as the learner's question.`;
 
     const response = await this.client.chat.completions.create({
       model: 'gpt-4o',
